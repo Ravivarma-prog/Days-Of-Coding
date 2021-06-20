@@ -1,0 +1,38 @@
+Given an array/list 'ARR' of ‘N’ distinct integers, you are supposed to find the third largest element in the given array 'ARR'.
+
+Approach : Three variables to maintain the track of first,second and third largest variable.
+
+Time Complexity : O(N)
+Space Complexity: O(1)
+
+link : https://www.codingninjas.com/codestudio/problems/third-greatest-element_1095642?leftPanelTab=0
+
+Code:
+
+#include<bits/stdc++.h>
+
+int findThirdLagrest(vector < int > & arr) {
+ 	int first , second , third;
+    
+    first = second = third = INT_MIN;
+    
+    for(int i : arr)
+    {
+        if(i>first)
+        {
+            third = second;
+        	second = first;
+            first = i;
+        }
+        
+        else if(i < first && i > second)
+        {
+            third = second;
+            second  =i;
+        }
+        
+        else if(i < first && i < second && i > third)
+            third = i;
+    }
+    return  third;
+}
