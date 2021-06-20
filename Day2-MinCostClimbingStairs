@@ -4,6 +4,8 @@ Return the minimum cost to reach the top of the floor.
 
 Approach : Dynamic programming. I calculated the minimum cost for each steps and minimised the cost.
 
+link : https://leetcode.com/problems/min-cost-climbing-stairs/
+
 Code :
 class Solution {
 public:
