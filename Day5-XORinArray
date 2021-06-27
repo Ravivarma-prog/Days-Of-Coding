@@ -1,0 +1,28 @@
+Given an integer n and an integer start.
+Define an array nums where nums[i] = start + 2*i (0-indexed) and n == nums.length.
+Return the bitwise XOR of all elements of nums.
+
+Approach : Using loop
+
+Time Complexity : O(N)
+Space Complexity : O(1) No extra space used
+
+link : https://leetcode.com/problems/xor-operation-in-an-array/
+
+Code: 
+
+class Solution {
+public:
+    int xorOperation(int n, int start) {
+        if(n==1)
+            return start;
+        
+        int ans = 0;
+        
+        for(int i=0;i<n;i++)
+            ans ^= (start + 2*i);
+        
+        return ans;
+        
+    }
+};
