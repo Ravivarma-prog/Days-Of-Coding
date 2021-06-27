@@ -7,7 +7,10 @@ output : 13  which are [2 , 5 , 6 (2*3)  , 7, 15 (3*5) , 10 (2*5) , 14 (2*7) , 3
   
 Approach :Used dynamic programming in which there are 2 case i.e., Either include a number and recurse it with the product*number or Discard the number and proceed to
             the next number with same product
-            
+	    
+	    ![image](https://user-images.githubusercontent.com/59328798/123556105-0f3b8000-d7a7-11eb-8064-037c4196957a.png)
+	    
+	    
 Time Complexity : O(N*2^N)
 Space Complexity : O(M) where M is the distinct products
   
