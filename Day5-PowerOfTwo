@@ -1,0 +1,21 @@
+Given an integer n, return true if it is a power of two. Otherwise, return false.
+An integer n is a power of two, if there exists an integer x such that n == 2. (Inc. Negative number)
+
+Approach : If a number is less than 0 it can't be power of 2. If a number is positive then n&(n-1) should be zero for power of 2
+           A number is power of two if it has only on set bit and the previous number has all set bits. The AND of these should give 0
+           
+Time Complexity :  O(1)
+Space Complexity : O(1)
+
+link : https://leetcode.com/problems/power-of-two/submissions/
+
+Code :
+
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n<=0)
+            return false;
+        return (n & (n-1))==0;
+    }
+};
