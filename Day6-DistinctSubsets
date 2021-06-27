@@ -1,0 +1,62 @@
+Given an array of n integers . Count the number of subsets whose product is a product of distinct prime factors
+
+eg : [2 , 5 , 6, 7 , 15]
+output : 13  which are [2 , 5 , 6 (2*3)  , 7, 15 (3*5) , 10 (2*5) , 14 (2*7) , 30 (2 * 3 * 5) , 35 (5 * 7) , 
+                      42 (2 * 3 * 7) , 105 (7 * 3 * 5) , 210 (2*5*3*7) , 70 (7*2*5]
+	90 can't come because it is 2*3*3*5 which doesn't have distinct prime factors
+  
+  Approach :Used dynamic programming in which there are 2 case i.e., Either include a number and recurse it with the product*number or Discard the number and proceed to
+            the next number with same product
+            
+  Time Complexity : O(N*2^N)
+  Space Complexity : O(M) where M is the distinct products
+  
+  Code :
+  
+#include<bits/stdc++.h>
+#define ll unsigned long long int
+using namespace std;
+
+unordered_map<ll , int> m;
+
+bool isDistinct(ll n)
+{
+	if(n == 1)
+		return false;
+	for(ll i=2 ; i <= n ; i++)
+	{
+		ll count = 0;
+		while(n > 1 && n%i == 0)
+		{
+			count++;
+			n = n / i;
+		}
+		if(count > 1)
+			return false;
+	}
+	return true;
+}
+
+void distinctSubsets(ll a[] , ll n , ll p)
+{
+	if(isDistinct(p))
+	{
+		m[p] = 1;
+	}
+	if(n==0)
+		return;
+	distinctSubsets(a , n-1 , p*a[n-1]);
+	distinctSubsets(a , n-1 , p);
+}
+
+int main(){
+	ll n;
+	cin >> n ;
+	ll arr[n];
+	for(ll i= 0;i<n;i++)
+		cin >> arr[i];
+	distinctSubsets(arr , n , 1);
+	cout << m.size() << endl;
+	for(auto it = m.begin() ; it!=m.end() ; it++)
+		cout << it->first << " ";
+}
