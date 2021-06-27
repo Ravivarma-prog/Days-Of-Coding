@@ -13,7 +13,7 @@ class Solution {
 public:
     string longestPalindrome(string s) {
      
-        int ml = 0;
+        int ml = 0; // Maximum length
         int start =0;
         int n = s.length();
         for(int mid = 0 ; mid < n ; mid ++)
