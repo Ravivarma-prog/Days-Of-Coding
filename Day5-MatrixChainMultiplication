@@ -1,0 +1,59 @@
+Given a sequence of matrices, find the most efficient way to multiply these matrices together. 
+The efficient way is the one that involves the least number of multiplications.
+The dimensions of the matrices are given in an array arr[] of size N (such that N = number of matrices + 1) where the ith matrix has the dimensions (arr[i-1] x arr[i]).
+
+Approach : Dynamic programming. Partition the array and optimising it
+           Example : 10 20 30 40 can be partitioned as (10 20)(30 40) or (10 20 30)(40) ->( (10 20)(30) ) (40)  or ( (10)(20 30) ) (40)
+
+Time Complexity : O(N^3)
+Space Complexity : O(N^2)
+
+link : https://practice.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1#
+
+Code :
+
+class Solution{
+
+public:
+    
+    int dp[101][101];
+    
+    int solve(int arr[] ,  int i , int j)
+    {
+        if(i >= j)
+            return 0;
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+            
+        int ans= INT_MAX;
+        
+        for(int k = i ; k < j; ++k)
+        {
+            int ik =0, jk = 0;
+             
+            if(dp[i][k]!=-1)
+                ik= dp[i][k];
+            else
+                ik = solve(arr , i , k);
+            
+            if(dp[k+1][j]!=-1)
+                jk = dp[k+1][j];
+            else
+                jk = solve(arr , k+1 , j);
+            
+            int temp = ik + jk + (arr[i-1]*arr[k]*arr[j]);
+             
+            ans = min(temp , ans);
+        }
+        
+        return dp[i][j] = ans;
+    }
+
+    int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        memset(dp , -1 , sizeof(dp));
+        int res = solve(arr , 1 , N-1);
+        return res;
+    }
+};
