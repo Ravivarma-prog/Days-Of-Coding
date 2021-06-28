@@ -1,0 +1,38 @@
+Given an array of non-negative integers arr, you are initially positioned at start index of the array.
+When you are at index i, you can jump to i + arr[i] or i - arr[i], check if you can reach to any index with value 0.
+Notice that you can not jump outside of the array at any time 
+
+Approach : Recursive approach where if the element at pos is zero return true. We maintain a visited array to check if any deadlock is present.
+
+Time Complexity : O(N) approximately
+Space Complexity : O(N) for visited array
+
+link : https://leetcode.com/problems/jump-game-iii/
+
+Code :
+
+class Solution {
+public:  
+    bool solve(vector<int> & arr , int pos , int vis[] , int dp[]){
+        
+        if(pos < 0 || pos >= arr.size())
+            return false;
+        if(arr[pos] == 0)
+            return true;
+        if(vis[pos] == 1)
+            return false;
+        if(dp[pos]!=-1)
+            return dp[pos];    
+        vis[pos] = 1;
+        return dp[pos] = false || solve(arr ,pos+arr[pos] , vis ,dp) || solve(arr , pos-arr[pos] ,vis , dp);
+    }
+    
+    bool canReach(vector<int>& arr, int start) {
+        int n = arr.size();
+        int vis[n] , dp[n];
+        memset(vis , 0 ,sizeof(vis));
+        memset(dp , -1 ,sizeof(dp));
+        bool res = solve(arr , start , vis , dp);
+        return res;
+    }
+};
