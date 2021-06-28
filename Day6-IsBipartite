@@ -1,0 +1,70 @@
+There is an undirected graph with n nodes, where each node is numbered between 0 and n - 1. 
+You are given a 2D array graph, where graph[u] is an array of nodes that node u is adjacent to. 
+More formally, for each v in graph[u], there is an undirected edge between node u and node v. The graph has the following properties:
+
+1.There are no self-edges (graph[u] does not contain u).
+2.There are no parallel edges (graph[u] does not contain duplicate values).
+3.If v is in graph[u], then u is in graph[v] (the graph is undirected).
+4.The graph may not be connected, meaning there may be two nodes u and v such that there is no path between them.
+A graph is bipartite if the nodes can be partitioned into two independent sets A and B such that every edge in the graph connects a node in set A and a node in set B.
+Return true if and only if it is bipartite.
+
+Approach : Depth first search
+
+link : https://leetcode.com/problems/is-graph-bipartite/
+
+Code :
+
+class Solution {
+public:
+    
+    vector<int> g[101];
+    int col[101] , vis[101];
+    
+    bool dfs(int src , int c)
+    {
+        vis[src]=1;
+        col[src] = c;
+        for(int child : g[src])
+        {
+            if(!vis[child])
+            {
+                if (dfs(child , c^1) == true)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                if(col[child] == c)
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        for(int u = 0 ;u<n ;u++)
+        {
+            for(int v : graph[u])
+            {
+                g[u].push_back(v);
+                g[v].push_back(u);
+            }
+        }       
+        for(int i  = 0 ; i < n ; i++)
+        {
+            memset(vis , 0 , sizeof(vis));
+            memset(col , 0 , sizeof(col));
+            
+            if(!vis[i])
+            {
+                bool res = dfs(i , 0);
+                if(res == false)
+                    return false;
+            }
+        }
+        return true;
+    }
+};
