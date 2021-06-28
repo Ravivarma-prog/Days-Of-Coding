@@ -1,0 +1,58 @@
+Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
+The distance between two adjacent cells is 1.
+
+Approach : Applying BFS on 2D grid will give the minimum distance for sure
+
+link : https://leetcode.com/problems/01-matrix/
+
+Code :
+
+int dx[] = {1 , -1 , 0 , 0};
+int dy[] = {0 , 0 , 1 , -1};
+
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size() , n = mat[0].size();
+        
+        vector<vector<int>> dist(m , vector<int>(n , INT_MAX));
+        
+        queue<pair<int,int>> q;
+        //For storing the indices
+        
+        for(int i=0 ; i < m ; i++)
+        {
+            for(int j= 0; j < n ; j++)
+            {
+                if(mat[i][j] == 0)
+                    q.push({i,j}) , dist[i][j] = 0;
+            }
+        }
+        
+        while(!q.empty())
+        {
+            pair<int,int> curr = q.front();
+            q.pop();
+            
+            int x = curr.first , y = curr.second;
+            
+            for(int k = 0 ; k < 4 ; k++)
+            {
+                int new_x = x+dx[k];
+                int new_y = y+dy[k];
+                
+                if(new_x >= 0 && new_x < m && new_y >= 0 && new_y < n)
+                {
+                    if(dist[new_x][new_y]==INT_MAX)
+                    {
+                        dist[new_x][new_y] = 1+dist[x][y];
+                        q.push({new_x,new_y});
+                    }
+                }
+            }
+        }
+        
+        return dist;
+        
+    }
+};
