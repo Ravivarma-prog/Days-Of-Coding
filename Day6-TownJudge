@@ -1,0 +1,46 @@
+In a town, there are n people labelled from 1 to n.  There is a rumor that one of these people is secretly the town judge.
+If the town judge exists, then:
+
+1.The town judge trusts nobody.
+2.Everybody (except for the town judge) trusts the town judge.
+3.There is exactly one person that satisfies properties 1 and 2.
+You are given trust, an array of pairs trust[i] = [a, b] representing that the person labelled a trusts the person labelled b.
+If the town judge exists and can be identified, return the label of the town judge.  Otherwise, return -1.
+
+Approach : Checking the indegree and outdegree
+
+Time Complexity : O(N)
+Space Complexity : O(N)
+
+link : https://leetcode.com/problems/find-the-town-judge/
+
+Code :
+
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        int indegree[n+1]  , outdegree[n+1] ;
+        memset(indegree , 0 , sizeof(indegree));
+        memset(outdegree , 0 , sizeof(outdegree));
+        
+        int judges = 0 , judge = -1;
+        
+        for(vector<int> t : trust)
+        {
+            int u = t[0] , v = t[1];
+            outdegree[u]++;
+            indegree[v]++;
+        }
+        for(int i = 1 ; i <= n ; i++)
+        {
+            if(outdegree[i] == 0  && indegree[i] == n-1)
+                judges++ , judge = i;
+        }
+        
+        if(judges != 1)
+            return -1;
+        
+        return judge;
+    }
+    
+};
