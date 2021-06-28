@@ -1,0 +1,58 @@
+There are n cities. Some of them are connected, while some are not.
+If city a is connected directly with city b, and city b is connected directly with city c,
+then city a is connected indirectly with city c.
+
+A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+
+You are given an n x n matrix isConnected where isConnected[i][j] = 1 if the ith city and the jth city are directly connected, and isConnected[i][j] = 0 otherwise.
+Return the total number of provinces.
+
+Approach : Depth first search
+
+link : https://leetcode.com/problems/number-of-provinces/
+
+Code :
+
+class Solution {
+public:
+    
+    vector<int> g[201];
+    int vis[201];
+    
+    void dfs(int src)
+    {
+        vis[src] = 1;
+        
+        for(int child : g[src])
+        {
+            if(!vis[child])
+                dfs(child);
+        }
+    }
+    
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int m = isConnected.size();
+        int n = isConnected[0].size();
+        
+        for(int i = 0 ; i < m ; i++)
+        {
+            for(int j = 0 ; j < m ; j++)
+            {
+                if(i!=j && isConnected[i][j]==1)
+                    g[i+1].push_back(j+1);                
+            }
+        }
+        
+        int cc = 0 ;
+        for(int i = 1 ; i <= m ; i++)
+        {
+            if(!vis[i])
+            {
+                dfs(i);
+                cc++;
+            }
+        }
+        
+        return cc;
+    }
+};
