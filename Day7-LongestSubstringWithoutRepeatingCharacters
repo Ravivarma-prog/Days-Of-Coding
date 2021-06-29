@@ -1,0 +1,36 @@
+Given a string s, find the length of the longest substring without repeating characters.
+
+Approach : Sliding window approach
+
+Time Complexity : O(N)
+Space Complexity : O(N)
+
+link : https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+Code :
+
+class Solution {
+public:
+    
+    int lengthOfLongestSubstring(string s) {
+        int charCount[255];
+        int n =s.length();
+        memset(charCount , 0 ,sizeof(charCount));
+        int i = 0 , j = 0 , maxLength = 0;
+        while(j < n)
+        {
+            if(charCount[abs(s[j])] == 0)
+            {
+                charCount[abs(s[j])]++;
+                maxLength = max(maxLength , j-i+1);
+                j++;
+            }
+            else
+            {
+                charCount[s[i]]--;
+                i++;
+            }           
+        }
+        return maxLength;
+    }
+};
