@@ -1,0 +1,49 @@
+Given an array of distinct integers candidates and a target integer target, 
+return a list of all unique combinations of candidates where the chosen numbers sum to target.
+You may return the combinations in any order.
+The same number may be chosen from candidates an unlimited number of times. 
+Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+
+Approach : Unbounded knapsack
+
+link : https://leetcode.com/problems/combination-sum/
+
+Code :
+
+class Solution {
+public:
+    vector<vector<int>> out = {};
+    
+    void formSum(vector<int> a , int n , int s , vector<int> ans)
+    {
+        if(s == 0)
+        {
+          out.push_back(ans);
+          return;
+        } 
+        if(n==0)
+            return;
+        if(a[n-1] <= s)
+        {
+            ans.push_back(a[n-1]);
+            formSum(a , n , s-a[n-1] ,ans);
+            ans.pop_back();
+            formSum(a , n-1 ,s ,ans);
+            return;
+        }
+        else
+        {
+            formSum(a , n-1 , s ,ans);
+            return;
+        }
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> comb = {};
+        int n = candidates.size();
+        sort(candidates.begin() , candidates.end());
+        formSum(candidates , n , target , comb);
+        return out;
+    }
+};
