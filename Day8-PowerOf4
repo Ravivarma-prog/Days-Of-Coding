@@ -1,0 +1,27 @@
+Given an integer n, return true if it is a power of four. Otherwise, return false.
+An integer n is a power of four, if there exists an integer x such that n == 4x.
+
+Approach : Without loops . First of all the number must be power of two and the number of bits must be odd . Log2(n) gives numberofBits-1
+
+Time Complexity : O(logN)
+Space Complexity : O(1)
+
+link : https://leetcode.com/problems/power-of-four/
+
+Code :
+
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        
+        if(n <= 0)
+            return false;
+        
+       int b = log2(n);
+        
+        if((n&(n-1)) == 0 && b%2==0)
+            return true;
+        
+        return false;
+    }
+};
