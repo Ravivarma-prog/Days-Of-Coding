@@ -1,0 +1,48 @@
+A string is a valid parentheses string (denoted VPS) if it meets one of the following:
+
+1.It is an empty string "", or a single character not equal to "(" or ")",
+2.It can be written as AB (A concatenated with B), where A and B are VPS's, or
+3.It can be written as (A), where A is a VPS.
+We can similarly define the nesting depth depth(S) of any VPS S as follows:
+
+depth("") = 0
+depth(C) = 0, where C is a string with a single character not equal to "(" or ")".
+depth(A + B) = max(depth(A), depth(B)), where A and B are VPS's.
+depth("(" + A + ")") = 1 + depth(A), where A is a VPS.
+For example, "", "()()", and "()(()())" are VPS's (with nesting depths 0, 1, and 2), and ")(" and "(()" are not VPS's.
+Given a VPS represented as string s, return the nesting depth of s
+
+Approach : Maintain an array for the depth of each index. If ( is encountered depth is increased by 1. If ) is encountered depth is decreased by 1
+
+Time Complexity : O(N)
+Space Complexity : O(N)
+
+link : https://leetcode.com/problems/maximum-nesting-depth-of-the-parentheses/
+
+Code :
+
+class Solution {
+public:
+    int maxDepth(string s) {
+        int n = s.length();
+        
+        vector<int> depthForIndex(n , 0);
+        int depth = 0 ; 
+        
+        for(int i = 0 ;i<n;i++)
+        {
+            depthForIndex[i] = depth;
+            
+            if(s[i] == '(')
+                depth++;
+            
+            if(s[i] == ')')
+                depth--;
+        }
+        int mxDepth = 0;
+        for(int i : depthForIndex)
+            mxDepth = max(mxDepth , i);
+        
+        return mxDepth;
+    }
+};
