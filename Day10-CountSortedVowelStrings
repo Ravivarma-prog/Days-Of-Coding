@@ -1,0 +1,48 @@
+Given an integer n, return the number of strings of length n that consist only of vowels (a, e, i, o, u) and are lexicographically sorted.
+A string s is lexicographically sorted if for all valid i, s[i] is the same as or comes before s[i+1] in the alphabet.
+
+Approach : Dynammic Programming
+
+Time Compexity : O(N^2)
+Space Complexity : O(N^2)
+
+link : https://leetcode.com/problems/count-sorted-vowel-strings/
+
+Code :
+
+class Solution {
+public:
+    
+    char vowels[5] = {'a','e','i','o','u'};
+    int dp[51][5];
+    
+    int sortedVowels(int n , int pos)
+    {
+        if(n==0)
+            return 1;
+        
+        if(dp[n][pos]!=-1)
+            return dp[n][pos];
+        
+        int temp = 0;
+        
+        for(int k = pos ; k < 5 ; k++)
+        {
+            
+            if(dp[n-1][k]!=-1)
+                temp+=dp[n-1][k];
+            else
+                temp += sortedVowels(n-1 , k);  
+        }
+        
+        return dp[n][pos] = temp;
+        
+    }
+        
+    
+    int countVowelStrings(int n) {
+        memset(dp,-1,sizeof(dp));
+        int res = sortedVowels(n , 0);
+        return res;
+    }
+};
