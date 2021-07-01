@@ -1,0 +1,36 @@
+You are given the array paths, where paths[i] = [cityAi, cityBi] means there exists a direct path going from cityAi to cityBi.
+Return the destination city, that is, the city without any path outgoing to another city.
+It is guaranteed that the graph of paths forms a line without any loop, therefore, there will be exactly one destination city.
+
+ Approach : Select the city with zero outedges
+ 
+ link : https://leetcode.com/problems/destination-city/
+ 
+ Code :
+ 
+ class Solution {
+public:
+    string destCity(vector<vector<string>>& paths) {
+        unordered_map<string , int> outedges;
+        
+        for(vector<string> p : paths){
+            string u = p[0] , v = p[1];
+            outedges[u]++;
+            outedges[v]--;
+        }
+        
+        int mn = INT_MAX;
+        string dest = "";
+        
+        for(auto it = outedges.begin() ; it!=outedges.end() ; it++)
+        {
+            if(it->second < mn)
+            {
+                mn = it->second;
+                dest = it->first;
+            }
+        }
+        
+        return dest;
+    }
+};
