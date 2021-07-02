@@ -1,0 +1,20 @@
+Write a function that reverses a string. The input string is given as an array of characters s.
+
+Approach : Used recursion to reverse in  O(1) space
+
+link : https://leetcode.com/problems/reverse-string/
+
+Code : 
+
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+       if(!s.empty())
+       {
+           char c = *(s.begin());
+           s.erase(s.begin());
+           reverseString(s);
+           s.push_back(c);
+       }
+    }
+};
