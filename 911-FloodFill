@@ -1,0 +1,56 @@
+An image is represented by an m x n integer grid image where image[i][j] represents the pixel value of the image.
+You are also given three integers sr, sc, and newColor. You should perform a flood fill on the image starting from the pixel image[sr][sc].
+To perform a flood fill, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as
+the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color), and so on.
+Replace the color of all of the aforementioned pixels with newColor.
+
+Return the modified image after performing the flood fill.
+
+Approach : BFS on 2D grid
+
+link : https://leetcode.com/problems/flood-fill/
+
+Code :
+
+using grid = pair<int,int>;
+int dx[] = {-1,1,0,0};
+int dy[] = {0,0,-1,1};
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        int r = image.size();
+        int c = image[0].size();
+        
+        // vector<vector<int>> color(r , vector<int> (c));
+        
+        int check = image[sr][sc];
+        image[sr][sc] = newColor;
+        queue<grid> q;
+        
+        q.push({sr,sc});
+        
+        while(!q.empty())
+        {
+            grid curr = q.front();
+            q.pop();
+            int x = curr.first;
+            int y = curr.second;
+            
+            for(int i = 0 ; i < 4 ; i++)
+            {
+                int newX = x+dx[i];
+                int newY = y+dy[i];
+                
+                if(newX >= 0 && newX < r && newY >= 0 && newY < c)
+                {
+                    if(image[newX][newY] == check && image[newX][newY]!=newColor)
+                        image[newX][newY] = newColor , q.push({newX,newY});
+                }
+                
+            }
+        }
+        
+        return image;
+        
+    }
+};
