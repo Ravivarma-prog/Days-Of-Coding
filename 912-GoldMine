@@ -1,0 +1,54 @@
+Given a gold mine called M of (n x m) dimensions. Each field in this mine contains a positive integer which is the amount of gold in tons. Initially the miner can start from any row in the first column. From a given cell, the miner can move
+
+1.to the cell diagonally up towards the right 
+2.to the right
+3.to the cell diagonally down towards the right
+Find out maximum amount of gold which he can collect.
+
+Approach : Dynammic Programming
+
+link : https://practice.geeksforgeeks.org/problems/gold-mine-problem2608/1#
+
+Code:
+
+int dx[3] = {-1 , 0 , 1};
+int dy[3] = {-1 , -1 , -1};
+
+class Solution{
+public:
+    int maxGold(int n, int m, vector<vector<int>> M)
+    {
+        // code here
+        int gold[n][m];
+        
+        memset(gold , 0 , sizeof(gold));
+        
+        for(int i = 0 ; i < n ; i++)
+            gold[i][0] = M[i][0];
+        int mx = 0;
+        for(int y = 1 ; y < m ; y++)
+        {
+            for(int x = 0 ; x < n ; x++)
+            {
+                for(int k = 0 ; k < 3; k++)
+                {
+                    int newX = x+dx[k] , newY = y+dy[k];   
+                    if(newX >= 0 && newX < n && newY >= 0 && newY < m)
+                    {
+                       gold[x][y] = max(gold[x][y] , gold[newX][newY]+M[x][y]);
+                    }
+                }
+            }
+        }
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int j = 0 ; j < m ; j++)
+            {
+                mx = max(gold[i][j] , mx);
+            }
+        }
+        
+        return mx;
+        
+    }
+};
