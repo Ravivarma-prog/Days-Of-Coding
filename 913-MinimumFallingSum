@@ -1,0 +1,46 @@
+Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
+A falling path starts at any element in the first row and chooses the element in the next row that is either directly below or diagonally left/right.
+Specifically, the next element from position (row, col) will be (row + 1, col - 1), (row + 1, col), or (row + 1, col + 1).
+
+link : https://leetcode.com/problems/minimum-falling-path-sum/
+
+Code :
+
+int dx[3] = {-1 , -1 , -1};
+int dy[3] = {0 , -1 , 1};
+
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int r = matrix.size() ,  c = matrix[0].size();
+        
+        vector<vector<int>> sum(r, vector<int> (c,INT_MAX));
+        
+        for(int i = 0 ; i < c ; i++)
+        {
+            sum[0][i] = matrix[0][i];
+        }
+        
+        for(int i = 1 ; i < r ; i++)
+        {
+            for(int j = 0 ; j < c ; j++)
+            {
+                for(int k = 0 ; k < 3 ; k++)
+                {
+                    int x = i + dx[k] , y = j + dy[k];
+                    
+                    if(x >= 0 && x < r && y >= 0 && y < c)
+                        sum[i][j] = min(sum[i][j] , sum[x][y]+matrix[i][j]);
+                }
+            }
+        }
+        
+        int mn = INT_MAX;
+        
+        for(int i = 0 ; i < c ; i++)
+        {
+            mn = min(mn , sum[r-1][i]);
+        }
+        return mn;
+    }
+};
