@@ -1,0 +1,58 @@
+Given a m * n matrix of distinct numbers, return all lucky numbers in the matrix in any order.
+A lucky number is an element of the matrix such that it is the minimum element in its row and maximum in its column.
+
+Approach : Calculate the min for rows and max for columns. Find the common element of both
+
+link : https://leetcode.com/problems/lucky-numbers-in-a-matrix/
+
+Code : 
+
+class Solution {
+public:
+    vector<int> luckyNumbers (vector<vector<int>>& matrix) {
+        int r = matrix.size() , c = matrix[0].size();
+        
+        vector<int> row , col;
+        
+        for(int i = 0 ; i < r ; i++)
+        {
+            int mn = INT_MAX;
+            for(int j = 0 ; j < c ; j++)
+            {
+                mn = min(mn , matrix[i][j]);
+            }
+            
+            row.push_back(mn);
+        }
+        
+        for(int j = 0 ; j < c ; j++)
+        {
+            int mx = INT_MIN;
+            for(int i= 0 ; i < r ; i++)
+            {
+                mx = max(mx , matrix[i][j]);
+            }
+            
+            col.push_back(mx);
+        }
+        
+        sort(row.begin() , row.end());
+        sort(col.begin() , col.end());
+        
+        set<int> s;
+        
+        for(int i : row)
+        {
+            if(binary_search(col.begin() , col.end() , i))
+                s.insert(i);
+        }
+        
+        vector<int> out;
+        
+        for(int i : s)
+            out.push_back(i);
+        
+        return out;
+        
+    }
+};
