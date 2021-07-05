@@ -1,0 +1,79 @@
+You are given an m x n grid where each cell can have one of three values:
+
+1.0 representing an empty cell,
+2.1 representing a fresh orange, or
+3.2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+link : https://leetcode.com/problems/rotting-oranges/
+
+Code : 
+
+using pos = pair<int,int>;
+int dx[4] = {-1 , 1 , 0 , 0};
+int dy[4] = {0 , 0 , -1 , 1};
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int time = 0;
+        
+        int r = grid.size() , c = grid[0].size();
+        vector<vector<int>> minTime (r , vector<int> ( c, INT_MAX));
+        
+        queue<pos> q;
+        
+        for(int i = 0 ; i < r ; i++)
+        {
+            for(int j = 0 ; j < c ; j++)
+            {
+                if(grid[i][j] == 2)
+                {
+                    q.push({i,j});
+                    minTime[i][j] = 0;
+                }
+                if(grid[i][j] == 0)
+                    minTime[i][j] = 0;
+            }
+        }
+        
+        while(!q.empty())
+        {
+            pos curr = q.front();
+            q.pop();
+            
+            int x = curr.first , y = curr.second;
+            
+            for(int i = 0 ; i < 4 ; i++)
+            {
+                int newX = x + dx[i] , newY = y+dy[i];
+                
+                if(newX >= 0 && newY >= 0 && newX < r && newY < c && grid[newX][newY] == 1)
+                {
+                    if(minTime[newX][newY] == INT_MAX)
+                    {
+                        minTime[newX][newY] = minTime[x][y]+1;
+                        q.push({newX,newY});
+                    }
+                }
+                
+            }
+        }
+        
+        
+        for(int i = 0 ; i < r ; i++)
+        {
+            for(int j = 0 ; j < c ; j++)
+            {
+                time = max(time , minTime[i][j]);
+            }
+        
+        }
+        
+        if(time == INT_MAX)
+            return -1;
+        
+        return time;
+    }
+};
