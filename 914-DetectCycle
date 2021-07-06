@@ -1,0 +1,44 @@
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+link : https://leetcode.com/problems/linked-list-cycle/
+
+Code: 
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+       
+        if(head == NULL || head->next == NULL)
+            return false;
+        
+         ListNode * f = head->next , *s = head;
+        
+        
+        while(f != NULL && f->next != NULL)
+        {
+            if(f)
+            {
+                f = f->next;
+                
+                if(f)
+                {
+                    f = f->next;
+                    s = s->next;
+                }
+            }
+            
+            if(f == s)
+                return true;
+        }
+        
+        return false;
+    }
+};
