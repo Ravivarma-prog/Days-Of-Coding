@@ -1,0 +1,39 @@
+Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+link : https://leetcode.com/problems/evaluate-reverse-polish-notation/
+
+Code :
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> operand;
+        
+        for(string i : tokens)
+        {
+            if(i!="+" && i!="-" && i!="*" && i!= "/")
+                operand.push(stoi(i));
+            
+            else
+            {
+                int a = operand.top();
+                operand.pop();
+                int b = operand.top();
+                operand.pop();
+                
+                if(i=="+")
+                    operand.push(a+b);
+                else if(i=="-")
+                    operand.push(b-a);
+                else if(i == "*")
+                    operand.push(a*b);
+                else
+                    operand.push(b/a);
+                
+            }
+            
+        }
+        
+        return operand.top();
+    }
+};
