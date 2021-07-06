@@ -1,0 +1,77 @@
+You are given two non-empty linked lists representing two non-negative integers. 
+The most significant digit comes first and each of their nodes contains a single digit.
+Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+link : https://leetcode.com/problems/add-two-numbers-ii/
+
+Code :
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack<int> s1 ,s2;
+        ListNode * head = NULL;
+        int c = 0 ;
+        
+        while(l1)
+        {
+            s1.push(l1->val);
+            l1 =  l1->next;
+        }
+        
+        while(l2)
+        {
+            s2.push(l2->val);
+            l2 = l2->next;
+        }
+        
+        while(!s1.empty() || !s2.empty())
+        {
+            int n1 = 0 , n2 = 0;
+            
+            if(!s1.empty())
+            {
+                n1 = s1.top();
+                s1.pop();
+            }
+            
+            if(!s2.empty())
+            {
+                n2 = s2.top();
+                s2.pop();
+            }
+            
+            int s = n1+n2+c;
+            
+            c = s/10;
+            
+            ListNode * temp = new ListNode(s%10 , head);
+            head = temp;
+            
+        }
+        
+        if(c)
+        {
+            ListNode * temp = new ListNode(c , head);
+            head = temp;
+        }
+        
+        if(head == NULL)
+            return new ListNode(0);
+        
+        return head;
+    }
+    
+};
