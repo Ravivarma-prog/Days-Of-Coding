@@ -1,0 +1,151 @@
+There are n cities numbered from 0 to n-1.
+Given the array edges where edges[i] = [fromi, toi, weighti] represents a bidirectional and weighted edge between cities fromi and toi, and given the integer distanceThreshold.
+
+Return the city with the smallest number of cities that are reachable through some path and whose distance is at most distanceThreshold,
+If there are multiple such cities, return the city with the greatest number.
+
+Notice that the distance of a path connecting cities i and j is equal to the sum of the edges' weights along that path.
+
+link : https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/
+
+Approach 1 : Djikstra for all nodes
+
+Code:
+
+using edge = pair<int,int>;
+
+class Solution {
+    vector<edge> g[101];
+    
+    void populate(int src , vector<vector<int>> & d){
+        
+        priority_queue<edge , vector<edge> , greater<edge>> q;
+        q.push({0,src});
+        
+        d[src][src] = 0;
+        
+        while(!q.empty())
+        {
+            edge curr = q.top();
+            q.pop();
+            
+            int currNode = curr.second;
+            int currD = curr.first;
+            
+            for(edge e : g[currNode])
+            {
+                int nextNode = e.first;
+                int nextD = e.second;
+                
+                if(nextD+currD < d[src][nextNode])
+                {
+                    d[src][nextNode] = nextD + currD;
+                    q.push({d[src][nextNode] , nextNode });
+                }
+            }
+        }
+        
+    }
+    
+    
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        
+        // int n = edges.size();
+        
+        vector<vector<int>> dist(n , vector<int> (n , INT_MAX));
+        
+        for(vector<int> e : edges)
+        {
+            int u = e[0] , v = e[1] , w = e[2];
+            g[u].push_back({v,w});
+            g[v].push_back({u,w});
+        }
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            populate(i ,dist);
+        }
+        
+        int ans = INT_MAX , city;
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            int noCities = 0 ;
+            for(int j = 0 ; j < n ; j++){
+                if(dist[i][j] <= distanceThreshold)
+                    noCities++;
+            }
+            
+            if(noCities <= ans)
+                ans = noCities , city= i ;
+        }
+        
+     return city;   
+    }
+};
+
+
+/*
+
+for i = 0 -> n-1
+    djikstra algo and find the distance
+    dist[i][.....]
+*/
+
+Approach 2 : Floyd Warshall algorithm
+
+Code :
+
+class Solution {
+    
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold){
+        vector<vector<int>> dist(n , vector<int> (n , INT_MAX));
+        
+        for(vector<int> e : edges)
+        {
+            int u = e[0] , v= e[1] , w = e[2];
+            dist[u][v] = w;
+            dist[v][u] = w;
+        }
+        
+        for(int i = 0 ; i < n ; i++)
+            dist[i][i] = 0;
+        
+      
+
+        for(int k = 0 ; k < n ; k++)
+        {
+            for(int i = 0 ; i < n ; i++)
+            {
+                for(int j = 0 ; j < n ; j++)
+                {
+                    if(dist[i][k] == INT_MAX || dist[k][j] == INT_MAX)
+                        continue;
+                    
+                    dist[i][j] = min(dist[i][k]+dist[k][j] , dist[i][j]);
+                    
+                }
+            }
+        }
+        
+         int ans = INT_MAX , city;
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            int noCities = 0 ;
+            for(int j = 0 ; j < n ; j++){
+                if(dist[i][j] <= distanceThreshold)
+                    noCities++;
+            }
+            
+            if(noCities <= ans)
+                ans = noCities , city= i ;
+        }
+        
+     return city;  
+      
+        
+    }
+};
