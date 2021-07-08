@@ -1,0 +1,80 @@
+We are given a binary tree (with root node root), a target node, and an integer value k.
+Return a list of the values of all nodes that have a distance k from the target node.  The answer can be returned in any order.
+
+Approach : Running a dfs
+
+link : https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+
+Code :
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+    vector<int> g[501];
+    int vis[501] , dist[501];
+    
+    void dfs(int src , int d)
+    {
+        vis[src] = 1;
+        dist[src] = d;
+        
+        for(int i : g[src])
+        {
+            if(!vis[i])
+            {
+                dfs(i , dist[src]+1);
+            }
+        }
+    }
+    
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if(k==0)
+            return {target->val};
+        
+        memset(vis, 0 , sizeof(vis));
+        memset(dist , 0 , sizeof(dist));
+        
+        queue<TreeNode *> q;
+        
+        q.push(root);
+        
+        while(!q.empty()){
+            TreeNode * curr = q.front();
+            q.pop();
+            
+            if(curr->left)
+            {
+                g[curr->val].push_back(curr->left->val);
+                g[curr->left->val].push_back(curr->val);
+                q.push(curr->left);
+            }
+            
+             if(curr->right)
+            {
+                g[curr->val].push_back(curr->right->val);
+                g[curr->right->val].push_back(curr->val);
+                q.push(curr->right);
+            }
+               
+        }
+        
+        dfs(target->val , 0);
+        vector<int> ans = {};
+        for(int i = 0 ; i < 501 ; i++)
+        {
+            if(dist[i] == k)
+                ans.push_back(i);
+        }
+        
+        return ans;
+    }
+};
