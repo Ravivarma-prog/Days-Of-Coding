@@ -1,0 +1,29 @@
+Given an integer n, return the number of structurally unique BST's (binary search trees) which has exactly n nodes of unique values from 1 to n.
+
+Approach : Using Catalan numbers we could determine the number of BST for a given n
+           catalan[0] = catalan[1] = 1
+           Catalan[i] = catalan[k]*catalan[i-k-1] where 2 <= i <= n and 0 <= k < i
+           
+link : https://leetcode.com/problems/unique-binary-search-trees/
+
+Code :
+
+class Solution {
+public:
+    int numTrees(int n) {
+        
+        vector<int>catalan (n+1 , 0);
+        
+        catalan[0] = catalan[1] = 1;
+        
+        for(int i = 2 ; i <= n ; i++)
+        {
+            for(int j = 0 ; j < i ; j++)
+            {
+                catalan[i] += catalan[j]*catalan[i-j-1];
+            }
+        }
+        
+        return catalan[n];
+    }
+};
