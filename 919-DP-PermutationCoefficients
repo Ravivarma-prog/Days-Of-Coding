@@ -1,0 +1,43 @@
+/*
+Given n and k find the permutation value npk
+
+1				0P0
+1 1				1P0 1P1
+1 2 2			2P0 2P1 2P2
+1 3 6 6			3P0	3P1 3P2 3P3
+1 4 12 24 24	4P0 4P1 4P2 4P3 4P4
+
+p[i][j] = 1 if j==0
+		 i*p[i-1][j-1]
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int t;
+	cin >> t;
+	
+	while(t--)
+	{
+		int n , k ;
+		cin >> n >> k;
+		
+		int dp[n+1][n+1];
+		
+		for(int i = 0 ; i <= n ; i++)
+		{
+			for(int j = 0 ; j <= i ; j++)
+			{
+				if(j==0)
+					dp[i][j] = 1;
+				else
+					dp[i][j] = i*dp[i-1][j-1];
+			}
+		}
+		
+		cout << dp[n][k] << endl;
+		
+	}
+}
