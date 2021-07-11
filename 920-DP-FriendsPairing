@@ -1,0 +1,61 @@
+Given N friends, each one can remain single or can be paired up with some other friend.
+Each friend can be paired only once. Find out the total number of ways in which friends can remain single or can be paired up.
+Note: Since answer can be very large, return your answer mod 10^9+7.
+
+Approach :
+
+If a friend is single , then go with remaining n-1 friends
+If a friend is paired , then he will be paired with n-1 persons and go with the remaining n-2 persons
+
+pair[n] = pair[n-1] + (n-1) * pair[n-2]
+
+if n = 3 
+
+Friend 3 can be single and go with 2 persons. 2 persons can be paired in 2 ways
+Friend 3 can be paired and he will be paired like (1 3) and (2 3), the remaining 1 person can be paired with 1 ways. So it will be 2 * 1 ways
+
+if n = 4
+
+Friend 4 can be single and go with 3 person . 3 persons paired in 4 ways
+Friend 4 can be paired like (1 4) (2 4) (3 4) and the remaining 2 persons can be paired in 2 ways for each pair
+
+i.e (1 4) (2 3)
+    (1 4) (2) (3)
+    (2 4) (1 3)
+    (2 4) (1) (3)
+    (3 4) (1 2)
+    (3 4) (1) (2)
+    
+    that is why n-1 * pair(n-2)
+    
+link : https://practice.geeksforgeeks.org/problems/friends-pairing-problem5425/1#
+
+Code :
+
+class Solution
+{
+public:
+    
+    
+    int countFriendsPairings(int n) 
+    { 
+
+        
+        long long int mod = 1000000007;
+            
+        int dp[n+1];
+        
+        dp[1] = 1 , dp[2] = 2;
+        
+        for(int i = 3 ; i <= n ; i++)
+        {
+            int product = ( ((i-1)%mod) * (dp[i-2] % mod) ) % mod;
+            
+            dp[i] = (dp[i-1] % mod  + product % mod ) % mod;
+            
+        }
+        
+        return dp[n]%mod;
+    }
+};    
+
