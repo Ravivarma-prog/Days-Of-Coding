@@ -1,0 +1,81 @@
+Given a number n find the number of ways to partition it so that each partition is square free (not perfect square)
+
+Code :
+
+#include<bits/stdc++.h>
+using namespace std;
+
+/*
+
+This uses the concept of bell triangle where k = no of prime factor
+We are partitioning the set of k elements which is kth bell number
+
+
+bell triangle:
+
+1
+1   2
+2   3  5
+5   7 10 15
+15 20 27 37 52
+
+for eg :  30 has prime factors {2,3,5}
+There are 5 ways to partition it 
+
+The partitions are :
+
+{2}{3}{5}
+{2,3,5}
+{2}{3,5}
+{3}{2,5}
+{5}{2,3}
+
+*/
+
+int noPrimes(int n)
+{
+	int count = 0 ;
+	
+	for(int i = 2; i <= n ;i++)
+	{
+		if(n%i==0)
+		{
+			count++;
+			
+			while(n > 1 && n%i == 0)
+			{
+				n= n/i;
+			}
+		}
+	}
+	
+	return count;
+}
+
+int main()
+{
+	int n;
+	cin >> n ;
+	
+	
+	int k = noPrimes(n);
+	
+	int bell[k][k];
+	
+	bell[0][0] = 1;
+	
+	for(int i = 1 ; i < k ; i++)
+	{
+		for(int j = 0 ; j <= i ; j++)
+		{
+			if(j==0)
+				bell[i][j] = bell[i-1][i-1];
+			
+			else
+				bell[i][j] = bell[i][j-1]+bell[i-1][j-1];
+		}
+	}
+	
+	cout << bell[k-1][k-1];
+	
+}
