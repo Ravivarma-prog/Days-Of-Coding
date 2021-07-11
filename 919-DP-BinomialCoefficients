@@ -1,0 +1,59 @@
+/*
+
+Write a program that takes two parameters n and k and returns the value of Binomial Coefficient C(n, k).
+ For example, your program should return 6 for n = 4 and k = 2, and it should return 10 for n = 5 and k = 2.
+
+We can do nCr = n! / r! * (n-r)!
+
+But this takes time;
+
+So we can use Floyds triangle
+
+1           0C0
+1 1			1C0 , 1C1
+1 2 1	    2C0 , 2C1 , 2C2
+1 3 3 1     3C0 , 3C1 , 3C2 , 3C3
+1 4 6 4 1   4C0 , 4C1 , 4C2 , 4C3 , 4C4
+
+C[i][j] = 1 if j==0 or j == i
+		  C[i-1][j-1] + C[i-1][j] 
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int t;
+	cin >> t;
+	
+	while(t--)
+	{
+		int n , k;
+		cin >> n >> k;
+		
+		if(k > n)
+		{
+			cout << -1 << endl;
+			continue;
+		}
+		
+		int dp[n+1][n+1];
+		
+		for(int i = 0 ; i <= n ; i++)
+		{
+			for(int j = 0 ; j <= i ; j++)
+			{
+				if(j==0 || j==i)
+					dp[i][j] = 1;
+				
+				else
+					dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+			}
+		}
+		
+		
+		cout << dp[n][k] << endl;
+	}
+	
+}
