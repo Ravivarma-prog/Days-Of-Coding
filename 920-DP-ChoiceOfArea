@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct area{
+	int x ;
+	int y;
+};
+
+struct area s[3];
+
+int solve(int a , int b , int cur){
+	
+	if(a < 0 || b < 0)
+		return 0;
+	
+	int ans = 0;
+	
+	for(int i = 0 ; i < 3 ; i++)
+	{
+		int temp = 0;
+		if(i!=cur)
+			temp = 1+solve(a+s[i].x , b+s[i].y , i);
+		
+		ans = max(ans , temp);
+	}
+	
+	return ans;
+		
+}
+
+int main()
+{
+	int a , b;
+	
+	cin >> a >> b;
+	
+	for(int i = 0 ; i < 3 ; i++)
+	{
+		cin >> s[i].x >> s[i].y;
+	}
+	
+	int mx = 0;
+	
+	for(int i = 0 ; i < 3 ; i++)
+	{
+		int ans = solve(a+s[i].x , b+s[i].y , i);
+		mx = max(mx , ans);	
+	}
+	
+	cout << mx;
+}
