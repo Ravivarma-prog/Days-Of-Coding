@@ -1,0 +1,81 @@
+Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators.
+You may return the answer in any order.
+
+Approach : A extended version of Matrix Chain multiplication. Here i have segregated the numbers and operators and continued to paranthesize
+
+link : https://leetcode.com/problems/different-ways-to-add-parentheses/
+
+Code :
+
+class Solution {
+    
+    vector<int> dp[21][21];
+    
+    vector<int> solve(vector<string> s , int i , int j)
+    {
+        if(i==j)
+            return { stoi(s[i]) };
+        
+        if(!dp[i][j].empty())
+            return dp[i][j];
+        
+        vector<int> ans = {};
+        
+        for(int k = i+1 ; k < j ; k+=2)
+        {
+            
+            vector<int> l = solve(s , i , k-1);
+            vector<int> r = solve(s , k+1 , j);
+            
+            for(int ls : l)
+            {
+                for(int rs : r)
+                {
+                    if(s[k] == "*")
+                        ans.push_back(ls*rs);
+                    
+                    else if(s[k] == "-")
+                        ans.push_back(ls-rs);
+                    
+                    else if(s[k] == "+")
+                        ans.push_back(ls+rs);
+                }
+            }
+        }
+        
+        return dp[i][j] = ans;
+        
+    }
+    
+public:
+    vector<int> diffWaysToCompute(string expression) {
+        int n = expression.length();
+        vector<string> v;
+        string s = "";
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(expression[i] >= 48 && expression[i] <= 57)
+                s+=expression[i];
+            else
+            {
+                v.push_back(s);
+                s="";
+                string c = expression.substr(i,1);
+                v.push_back(c);
+            }
+        }
+        
+        v.push_back(s);
+        
+        for(string s : v)
+            cout << s << " ";
+        
+        int m = v.size();
+        
+        vector<int> ans = solve(v , 0 , m-1);
+        return ans;
+    }
+};
+
+ 
