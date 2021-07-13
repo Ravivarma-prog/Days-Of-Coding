@@ -1,0 +1,96 @@
+You are given an array of variable pairs equations and an array of real numbers values,
+where equations[i] = [Ai, Bi] and values[i] represent the equation Ai / Bi = values[i]. Each Ai or Bi is a string that represents a single variable.
+
+You are also given some queries, where queries[j] = [Cj, Dj] represents the jth query where you must find the answer for Cj / Dj = ?.
+
+Return the answers to all queries. If a single answer cannot be determined, return -1.0.
+
+Note: The input is always valid. You may assume that evaluating the queries will not result in division by zero and that there is no contradiction.
+
+Approach : Apply a bfs for each node and compute the value to reach each other nodes
+           a->b , b->c are the equations . a->c is a/b * b/c . So we should reach c by multiply the values
+           We should precompute all the values reachable from a node and continue this for all nodes
+   
+link : https://leetcode.com/problems/evaluate-division/
+
+Code :
+
+class Solution {
+    
+    map<string , vector<pair<string ,double>>> m;  // This is to store the graph for each node (string) there is a string and value as adjacent so it is a vector<pair<>>   
+    map< pair<string , string> , double > d; // This is to store the value from each node to every other nodes like (a,b) = 2.0 , (b,a) = 0.5
+    map<string , bool > vis; //To track the visited vertices
+    
+    void bfs(string src)
+    {
+        d[{src , src}] = 1.0;  // dividing self will be 1
+        
+        vis[src] = true;
+        
+        queue<string> q;
+        q.push(src);
+        
+        while(!q.empty())
+        {
+            string curr = q.front();
+            q.pop();
+            
+            vector<pair<string , double>> v = m[curr]; // get the adjacency list
+            
+            for(pair<string , double> p : v)
+            {
+                string next = p.first;
+                double w = p.second;
+                
+                if(vis.find(next) == vis.end())
+                {
+                    d[{src , next}] = d[ {src , curr} ] * w;
+                    q.push(next);
+                    vis[next] = true;
+                }
+                
+            }
+            
+        }
+    }
+        
+public:
+    
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        
+        int n = equations.size();
+        
+        //Creating the graph
+        for(int i = 0 ; i < n ; i++)
+        {
+            string u = equations[i][0] ,v = equations[i][1];
+            double w = values[i];
+            
+            m[u].push_back({v , w});
+            m[v].push_back({u , (1.0/w)});
+        }
+        
+        for(auto it = m.begin() ; it != m.end() ; it++)
+        {
+            string src = it->first;
+            
+            vis.clear(); // clear the visited map for each nodes
+            
+            bfs(src);
+            
+        }
+        
+        vector<double> ans = {};
+        for(int i = 0 ; i < queries.size() ; i++)
+        {
+            string u = queries[i][0] , v = queries[i][1];
+            
+            if(d.find({u,v}) == d.end())
+                ans.push_back(-1);
+            else
+                ans.push_back(d[{u,v}]);
+        }
+        
+        return ans;
+    }
+};
