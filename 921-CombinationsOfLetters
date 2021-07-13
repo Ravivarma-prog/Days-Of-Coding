@@ -1,0 +1,99 @@
+/*
+
+Given a number find all the possible combination of letters possible
+
+123 
+
+op : A B C 
+     L C
+     A W
+     *
+     
+1234 
+
+op : A B C D
+     A W D
+     A B *
+     A *
+     L C D
+     L *
+     * D
+     *
+     
+     Applied Matrix Chain mulitplication method to partition for characters
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+using p = pair<int,int>;
+using vec = vector<char>;
+
+
+char alp[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
+map< p , set<vec> > m; 
+
+set<vec> solve(string s , int i , int j)
+{
+    string temp = s.substr(i , j-i+1);
+    int val = stoi(temp);
+    
+    if(i==j)
+        return { {alp[val-1]} };    
+    
+    p currPos = {i,j};
+    
+    if(m.find(currPos) != m.end())
+        return m[currPos];
+    
+    set<vec> ans = {};
+    
+    if(val <= 26)
+        ans.insert({alp[val-1]});
+    
+    else
+        ans.insert({'*'});
+        
+    for(int k = i ; k < j ; k++)
+    {
+        set<vec> l = solve(s , i , k);
+        set<vec> r = solve(s , k+1 , j);
+        
+        for(vec a : l)
+        {
+            for(vec b : r)
+            {
+            
+                vec v1 = a , v2 = b;
+                
+                v1.insert(v1.end() , v2.begin() , v2.end());
+                
+                ans.insert(v1);
+                
+            }
+        }
+        
+    }
+    return m[currPos] = ans;
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    
+    string s = to_string(n);
+    int m = s.length();
+    
+    set<vector<char>> ans = solve(s , 0 , m-1);
+    
+    for(vector<char> v : ans)
+    {
+        for(char c : v)
+        {
+            cout << c << " ";
+        }
+        cout << endl;
+    }
+}
