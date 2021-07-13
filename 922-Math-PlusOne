@@ -1,0 +1,44 @@
+Given a non-empty array of decimal digits representing a non-negative integer, increment one to the integer.
+
+The digits are stored such that the most significant digit is at the head of the list, and each element in the array contains a single digit.
+
+You may assume the integer does not contain any leading zero, except the number 0 itself.
+
+
+link : https://leetcode.com/problems/plus-one/
+
+Code:
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int n = digits.size();
+        
+        vector<int> sum(n);
+        
+        int c = 0;
+        
+        sum[n-1] = (digits[n-1]+1)%10;
+        c = (digits[n-1]+1)/10;
+        
+        
+        for(int i = n-2 ; i >= 0 ; i--)
+        {
+            int s = c+digits[i];
+            sum[i] = s%10;
+            c = s/10;
+        }
+        
+        if(!c)
+            return sum;
+        
+        vector<int> ans;
+        ans.push_back(c);
+        
+        for(int i : sum)
+            ans.push_back(i);
+        
+        return ans;
+        
+    }
+};
