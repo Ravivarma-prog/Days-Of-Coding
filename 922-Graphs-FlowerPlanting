@@ -1,0 +1,81 @@
+You have n gardens, labeled from 1 to n, and an array paths where paths[i] = [xi, yi] describes a bidirectional path between garden xi to garden yi. 
+In each garden, you want to plant one of 4 types of flowers.
+
+All gardens have at most 3 paths coming into or leaving it.
+
+Your task is to choose a flower type for each garden such that, for any two gardens connected by a path, they have different types of flowers.
+
+Return any such a choice as an array answer, where answer[i] is the type of flower planted in the (i+1)th garden.
+The flower types are denoted 1, 2, 3, or 4. It is guaranteed an answer exists.
+
+Approach : Graph Coloring
+
+link : https://leetcode.com/problems/flower-planting-with-no-adjacent/
+
+Code :
+
+class Solution {
+    
+    vector<int> g[10001];
+    int flower[10001];
+    
+    bool isValid(int v , int c)
+    {
+        for(int i : g[v])
+        {
+            if(flower[i] == c)
+                return false;
+        }
+        return true;
+    }
+    
+    vector<int> solve(int v , int n , int m)
+    {
+        if(v == n)
+        {
+            vector<int> ans = {};
+            for(int i = 1; i <= n-1 ; i++)
+            {
+                ans.push_back(flower[i]);
+            }
+            
+            return ans;
+        }
+        
+        for(int c = 1 ; c <= m ; c++)
+        {
+            if(isValid(v ,c))
+            {
+                flower[v] = c;
+                vector<int> t = solve(v+1, n , m);
+                if(!t.empty())
+                    return t;
+                flower[v] = 0;
+            }
+        }
+        
+        return {};
+        
+    }
+    
+public:
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        
+        memset(flower , 0 , sizeof(flower));
+        
+        for(vector<int> p : paths)
+        {
+            int u = p[0] , v = p[1];
+            g[u].push_back(v);
+            g[v].push_back(u);
+        }
+        
+        vector<int> possiblePlanting = solve(1 , n+1 , 4);
+        return possiblePlanting;
+    }
+};
+
+
+/*
+Graph Coloring problem where adjacent vertices should have a different flower
+*/
