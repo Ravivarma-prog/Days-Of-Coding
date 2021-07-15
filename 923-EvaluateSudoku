@@ -1,0 +1,77 @@
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+Note:
+
+A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+Only the filled cells need to be validated according to the mentioned rules.
+
+link : https://leetcode.com/problems/valid-sudoku/
+
+Code :
+
+class Solution {
+public:
+    
+    bool isValid(int i , int j , int r , int c , vector<vector<char>> b)
+    {
+        set<char> grid = {} ;
+        for(int k = i ; k <= r ; k++)
+        {
+            for(int l = j ; l <= c ; l++)
+            {
+                cout << k << l << " ";
+                if(b[k][l]!='.' && grid.insert(b[k][l]).second == false)
+                    return false;
+            }
+            
+            cout << endl;
+        }
+        
+        return true;
+    }
+    
+    bool isValidSudoku(vector<vector<char>>& board) {
+        //Checking row
+        
+        for(int i = 0 ; i < 9 ; i++)
+        {
+            set<char> row = {};
+            for(int  j = 0 ; j < 9 ; j++)
+            {
+                if(board[i][j] != '.' && row.insert(board[i][j]).second == false)
+                    return false;
+            }
+        }
+        
+        //Checking columns
+        
+        for(int j = 0 ; j < 9 ; j++)
+        {
+            set<char> col ={};
+            
+            for(int i = 0 ; i < 9 ; i++)
+            {
+                if(board[i][j] != '.' && col.insert(board[i][j]).second == false)
+                    return false;
+            }
+        }
+        
+        //Checking Grids
+        
+        for(int i = 0 ; i < 9 ; i+=3)
+        {
+            for(int j = 0 ; j < 9 ; j+=3)
+            {
+                cout << i << j << "->" << i+2 << j+2 << endl;
+                if(isValid(i,j,i+2,j+2,board) == false)
+                    return false;
+            }
+        }
+        
+        return true;
+        
+    }
+};
