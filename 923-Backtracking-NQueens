@@ -1,0 +1,137 @@
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+link : https://leetcode.com/problems/n-queens/
+
+Code:
+
+class Solution {    
+public:
+    
+    vector<vector<string>> v;
+    
+    char board[10][10];
+    
+    bool isValid(int n, int r ,int c)
+    {
+        /*Check for the same row*/
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(board[r][i] == 'Q')
+                return false;
+        }
+        
+        /*Check for the same columns*/
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(board[i][c] == 'Q')
+                return false;
+        }
+        
+        /*Up left diagonal -> i-1 , j-1*/
+        
+        int i = r ,j=c;
+        
+        while(i-1 >= 0 && j-1 >=0)
+        {
+            if(board[i-1][j-1] == 'Q')
+                return false;
+            i--,j--;
+        }
+        
+         
+        /*Up right diagonal -> i-1 , j+1*/
+        
+        i = r ,j=c;
+        
+        while(i-1 >=0 && j+1 <n)
+        {
+            if(board[i-1][j+1] == 'Q')
+                return false;
+            i--,j++;
+        }
+        
+        
+        /*down left diagonal -> i+1 , j-1*/
+        
+        i = r ,j=c;
+        
+        while(i+1 <n && j-1 >=0)
+        {
+            if(board[i+1][j-1] == 'Q')
+                return false;
+            i++,j--;
+        }
+        
+        
+        /*down right diagonal -> i+1 , j+1*/
+        
+        i = r ,j=c;
+        
+        while(i+1 <n && j+1 <n)
+        {
+            if(board[i+1][j+1] == 'Q')
+                return false;
+            i++,j++;
+        }
+        
+        return true;
+        
+    }
+    
+    
+    void Nqueens(int n , int r)
+    {
+        //Base Condition
+        
+        if(n==r)
+        {
+            vector<string> ans = {};
+            
+            for(int i = 0 ; i < n ; i++)
+            {
+                string row = "";
+                
+                for(int j = 0 ; j < n ; j++)
+                {
+                    row+=board[i][j];
+                }
+                
+                ans.push_back(row);
+            }
+            
+            v.push_back(ans);
+        }
+        
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(isValid(n , r, j))
+            {
+                board[r][j] = 'Q';
+                Nqueens(n , r+1);
+            }
+            
+            board[r][j] = '.';
+        }
+        
+    }
+    
+    vector<vector<string>> solveNQueens(int n) {
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int j = 0 ; j < n ; j++)
+            {
+                board[i][j] = '.';
+            }
+        }
+        
+        Nqueens(n , 0);
+        
+        return v;
+        
+    }
+};
