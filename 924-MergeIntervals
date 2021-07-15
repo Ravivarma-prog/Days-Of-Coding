@@ -1,0 +1,48 @@
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals,
+and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+link : https://leetcode.com/problems/merge-intervals/
+
+Code :
+
+class Solution {
+public:
+    
+    static bool comp(vector<int> a , vector<int> b)
+    {
+        return a[0] < b[0];
+    }
+    
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin() , intervals.end() , comp);   
+        
+        int n = intervals.size();
+        
+        if(n==1)
+            return intervals;
+            
+        vector<vector<int>> ans={};
+        
+        vector<int> curInterval = intervals[0];
+    
+        
+        for(int i = 1 ; i < n ; i++)
+        {
+            if(intervals[i][0] > curInterval[1])
+            {
+                ans.push_back(curInterval);
+                curInterval = intervals[i];
+            }
+            
+            else
+            {
+                curInterval = {curInterval[0] , max(curInterval[1] , intervals[i][1]) };
+            }
+        }
+        
+        ans.push_back(curInterval);
+        
+        return ans;
+    }
+};
+ 
