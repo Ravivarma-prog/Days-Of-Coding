@@ -1,0 +1,83 @@
+On a 2-dimensional grid, there are 4 types of squares:
+
+1 represents the starting square.  There is exactly one starting square.
+2 represents the ending square.  There is exactly one ending square.
+0 represents empty squares we can walk over.
+-1 represents obstacles that we cannot walk over.
+Return the number of 4-directional walks from the starting square to the ending square, that walk over every non-obstacle square exactly once.
+
+link : https://leetcode.com/problems/unique-paths-iii/
+
+Code :
+
+class Solution {
+    int paths = 0;
+    
+    int dx[4] = {-1,1,0,0};
+    int dy[4] = {0,0,-1,1};
+    
+    bool isAllVisited(vector<vector<int>> g , vector<vector<int>> v)
+    {
+        int n = g.size() , m = g[0].size();
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int j = 0 ; j < m ; j++)
+            {
+                if(g[i][j] == 0 && v[i][j] == 0)
+                    return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    void move(int i , int j , int r ,int c , vector<vector<int>> & grid , vector<vector<int>> & vis)
+    {
+        if(grid[i][j] == 2)
+        {
+            if(isAllVisited(grid ,vis))
+                paths++;
+            return;
+        }
+        
+        vis[i][j] = 1;
+        
+        for(int k = 0 ; k < 4 ; k++)
+        {
+            int x = i+dx[k] , y = j+dy[k];
+            
+            if(x >= 0 && x < r && y >= 0 && y < c && grid[x][y] != -1 && grid[x][y] !=1 && vis[x][y] == 0)
+            {
+                move(x , y ,r ,c ,grid ,vis);
+            }
+        }
+        
+        vis[i][j] = 0;
+    }
+    
+public:
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int r = grid.size() , c = grid[0].size();
+        
+        vector<vector<int>> vis(r ,vector<int> (c , 0));
+        
+        int x , y;
+        
+        for(int i = 0 ; i < r ; i++)
+        {
+            for(int j = 0 ; j < c ; j++)
+            {
+                if(grid[i][j] == 1)
+                {
+                    x = i;
+                    y = j;
+                    break;
+                }
+            }
+        }
+        
+        move(x , y , r ,c ,grid , vis);
+        return paths;
+    }
+};
