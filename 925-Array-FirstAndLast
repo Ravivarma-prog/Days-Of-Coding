@@ -1,0 +1,61 @@
+Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Approach : Binary search
+
+link : https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+
+Code : 
+
+class Solution {
+    
+    vector<int> BS(vector<int> a , int i , int j , int t){
+        if(i >= j && a[i] == t)
+            return {i};
+        if(i >= j && a[i] != t)
+            return {};
+        
+        int mid = (i+j)/2;
+        vector<int> midVec = {};
+        if(a[mid] == t)
+            midVec.push_back(mid);
+        
+        vector<int> left= {}, right={};
+        if(t <= a[mid])
+            left = BS(a , i , mid-1 ,t);
+        
+        if(t >= a[mid])
+            right = BS(a , mid+1 , j , t);
+        
+        vector<int> ans = {};
+        
+        for(int i : left)
+            ans.push_back(i);
+        for(int i : midVec)
+            ans.push_back(i);
+        for(int i : right)
+            ans.push_back(i);
+        
+        return ans;
+    
+    }
+    
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        
+        if(n==0)
+            return {-1,-1};
+        
+        vector<int> ans = BS(nums , 0 , n-1 , target);
+        int m =ans.size();
+        
+        if(m==0)
+            return {-1,-1};
+        
+        return {ans[0] , ans[m-1]};
+    }
+};
