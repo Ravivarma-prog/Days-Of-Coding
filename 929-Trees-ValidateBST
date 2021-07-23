@@ -1,0 +1,57 @@
+Given a binary tree with N number of nodes, check if that input tree is BST (Binary Search Tree) or not. If yes, return true, return false otherwise.
+
+link : https://www.codingninjas.com/codestudio/problems/validate-bst_799483?topList=top-trees-interview-questions&leftPanelTab=0
+
+Code : 
+
+/*************************************************************
+ 
+    Following is the Binary Tree node structure
+
+    class BinaryTreeNode 
+    {
+    public : 
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+*************************************************************/
+vector<int> inorder(BinaryTreeNode<int> * root)
+{
+    vector<int> ans = {};
+    if(root)
+    {
+        vector<int> l = inorder(root->left);
+        for(int i : l)
+            ans.push_back(i);
+        ans.push_back(root->data);
+        vector<int> r = inorder(root->right);
+        
+        for(int i : r)
+            ans.push_back(i);
+    }
+    return ans;
+}
+
+bool validateBST(BinaryTreeNode<int> *root) {
+    // Write your code here
+    vector<int>ans = inorder(root);
+    
+    int n = ans.size();
+    
+    for(int i = 0 ; i < n-1 ; i++)
+    {
+        if(ans[i] > ans[i+1])
+            return false;
+    }
+    
+    return true;
+    
+}
