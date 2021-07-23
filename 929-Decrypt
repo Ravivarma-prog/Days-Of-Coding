@@ -1,0 +1,65 @@
+You are given a string, 'MESSAGE'. The receiver of this ‘MESSAGE’ has a set of instructions on how to decrypt the message.
+In order to decrypt the message, we need to perform some rotation operations on the string.
+These rotations can either be left rotations or right rotations. 
+The set of instructions contains information about which type of rotation is to be performed and how many times. Your task is to determine the decrypted message.
+
+link : https://www.codingninjas.com/codestudio/problems/decryption_1466956?leftPanelTab=0
+
+Code :
+
+void rotate(string & s , int i , int j)
+{
+    while(i < j)
+    {
+        char t = s[i];
+        s[i] = s[j];
+        s[j] = t;
+        i++;
+        j--;
+    }
+}
+
+void leftRotate(string & s , int d , int n)
+{
+    rotate(s , 0 , d-1);
+    rotate(s , d , n-1);
+    rotate(s , 0 , n-1);
+}
+
+void rightRotate(string & s , int d , int n)
+{
+//     reverse(s.begin() , s.end());
+//     leftRotate(s , d ,n);
+    rotate(s , 0 , n-d-1);
+    rotate(s , n-d , n-1);
+    rotate(s , 0 , n-1);
+}
+
+
+string decrypt(string& message, vector<vector<int>>& operations) {
+	// Write your code here.
+    if(message == "")
+        return "";
+        
+    int n = message.length();
+    
+    int d = 0;
+    for(vector<int> v : operations){
+    	if(v[0] == -1)
+            d+=v[1];
+    	else
+            d-=v[1];
+    }
+    
+    if(d < 0)
+    {
+        d = abs(d)%n;
+        rightRotate(message , d , n);
+    }
+    else
+    {
+        d = d%n;
+        leftRotate(message , d , n);
+    }
+    return message;
+}
