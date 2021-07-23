@@ -1,0 +1,105 @@
+Given a reference of a node in a connected undirected graph.
+
+Return a deep copy (clone) of the graph.
+
+Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
+
+class Node {
+    public int val;
+    public List<Node> neighbors;
+}
+
+link : https://leetcode.com/problems/clone-graph/
+
+Code :
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution {
+    
+    
+public:
+    int vis[101];
+    Node * newNodes[101];
+    
+    void dfs(Node * node ,Node * newNodes[])
+    {
+        
+        vis[node->val] = 1;
+        newNodes[node->val] = new Node(node->val);
+        cout << node->val << " ";
+        
+        for(auto i : node->neighbors)
+        {
+            if(vis[i->val] == 0)
+            {
+                dfs(i , newNodes);
+            }
+        }
+    }
+
+    Node* cloneGraph(Node* node) {
+        
+        if(node == NULL)
+            return NULL;
+    
+        
+        for(int i = 0 ; i < 101 ; i++)
+            newNodes[i] = NULL;
+        
+        dfs(node , newNodes);
+    
+        queue<Node * > q;
+        q.push(node);
+        
+        memset(vis , 0 ,sizeof(vis));
+        vis[node->val] = 1;
+        
+        while(!q.empty())
+        {
+            Node * curr = q.front();
+            q.pop();
+            cout << curr->val << " ";
+            vis[curr->val] = 1;
+            
+            for(auto next : curr->neighbors)
+            {
+                if(vis[next->val] == 0)
+                {
+                    q.push(next);
+                    newNodes[curr->val]->neighbors.push_back(newNodes[next->val]);
+                    newNodes[next->val]->neighbors.push_back(newNodes[curr->val]);
+                }
+            }
+            
+        }
+        
+        for(int i = 1 ; i <= 1 ; i++){
+            cout << i << "->";
+            for(auto n : newNodes[i]->neighbors)
+                cout << n->val << " ";
+            cout << endl;
+        }
+        
+        return newNodes[node->val];
+    }
+};
