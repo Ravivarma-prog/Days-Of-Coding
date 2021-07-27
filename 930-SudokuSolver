@@ -1,0 +1,110 @@
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+The '.' character indicates empty cells.
+
+link : https://leetcode.com/problems/sudoku-solver/
+
+Code :
+
+class Solution {
+public:
+    
+    char ans[9][9];
+    
+    bool isValid(int r , int c , char n , vector<vector<char>> & board)
+    {
+        // int sz = board.size();
+        for(int i = 0 ; i < 9 ; i++)
+        {
+            if(board[i][c] == n)
+                return false;
+        }
+        
+          for(int i = 0 ; i < 9 ; i++)
+        {
+            if(board[r][i] == n)
+                return false;
+        }
+        
+        int nr = r - r%3;
+        int nc = c - c%3;
+        
+        for(int i = 0 ; i < 3 ; i++)
+        {
+            for(int j = 0 ; j < 3 ; j++)
+            {
+                if(board[i+nr][j+nc] == n)
+                    return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    void printSudoku()
+    {
+        for(int i = 0 ; i < 9 ; i++)
+        {
+            for(int j = 0 ; j < 9 ; j++)
+            {
+                cout << ans[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void solve(int r , int c , vector<vector<char>> & board)
+    {
+        if(r == 8 && c == 9)
+        {
+            for(int i = 0 ; i < 9 ; i++){
+                for(int j = 0 ; j < 9 ; j++){
+                    ans[i][j] = board[i][j];
+                }
+            }
+            
+            return;
+        }
+        
+        if(c == 9)
+        {
+            r++;
+            c = 0;
+        }
+        
+        if(board[r][c] == '.')
+        {
+            
+            for(int num = 1 ; num <= 9 ; num++)
+            {
+                if(isValid(r , c , num+48 , board))
+                {
+                    board[r][c] = num+48;
+                    solve(r , c+1 , board);
+                    board[r][c] = '.';
+                }
+            }    
+        }
+        
+        else
+            solve(r , c+1 , board);
+        
+        
+    }
+    
+    void solveSudoku(vector<vector<char>>& board) {
+        solve(0 , 0 , board);
+        for(int  i = 0 ; i < 9 ; i++)
+        {
+            for(int j = 0 ; j < 9 ; j++)
+            {
+                board[i][j] = ans[i][j];
+            }
+        }
+    }
+};
