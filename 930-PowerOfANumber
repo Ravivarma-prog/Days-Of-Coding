@@ -56,3 +56,43 @@ public:
         
     }
 };
+
+
+Using Iterations :
+
+
+    double myPow(double x, int n) {
+        
+        if(x == 1)
+            return 1;
+        
+        if(n == 1)
+            return x;
+        
+        if(n == -1)
+            return 1/x;
+        
+        double ans = 1;
+        long int nn;
+        
+        if(n < 0)
+           nn = -1 * long(n);
+        else
+            nn = n;
+        
+        while(nn)
+        {
+            if(nn%2 == 0)
+            {
+                x = x*x;
+                nn/=2;
+            }
+            else
+            {
+                ans = ans*x;
+                nn-=1;
+            }
+        }
+        
+        return n > 0 ? ans : 1.0/ans;
+        
