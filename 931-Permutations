@@ -1,0 +1,32 @@
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+ link : https://leetcode.com/problems/permutations/
+ 
+ Code :
+ 
+ class Solution {
+public:
+    vector<vector<int>> ans = {};
+    
+    void permuteAll(vector<int> & nums , int  i, int j)
+    {
+        if(i == j)
+            ans.push_back(nums);
+        else
+        {
+            for(int k = i ; k <= j ; k++)
+            {
+                swap(nums[i] , nums[k]);
+                permuteAll(nums , i+1 , j);
+                swap(nums[i] , nums[k]);
+            }
+        }
+    }
+    
+    
+    vector<vector<int>> permute(vector<int>& nums) {
+        int n = nums.size();
+        permuteAll(nums , 0 , n-1);
+        return ans;
+    }
+};
