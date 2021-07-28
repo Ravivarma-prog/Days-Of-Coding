@@ -1,0 +1,58 @@
+There is an integer array nums sorted in ascending order (with distinct values).
+
+Prior to being passed to your function, nums is rotated at an unknown pivot index k (0 <= k < nums.length)
+such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). 
+For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+
+Given the array nums after the rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+link : https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+Code : 
+
+Find the minimum element and define the boundary
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int start = 0 , end = nums.size()-1;
+        
+        //Finding the smallest element
+        while(start < end)
+        {
+            int mid = start + (end- start)/2;
+            
+            if(nums[mid] > nums[end])
+                start = mid+1;
+            else
+                end = mid;
+        }
+        
+        //Setting the bounds. If the target is greater than the pivot and less than the end then the range to search is from pivot to end. since pivot contains min element
+        int pivot = start;
+        start = 0 , end = nums.size()-1;
+        
+        if(target >= nums[pivot] && target <= nums[end])
+            start = pivot;
+        else
+            end = pivot;
+        
+        //Normal binary search
+        while(start <= end)
+        {
+            int mid = start + (end-start)/2;
+            
+            if(target > nums[mid])
+                start = mid+1;
+            else
+                end = mid-1;
+            
+            if(nums[mid] == target)
+                return mid;
+        }
+        
+        return -1;
+    }
+};
