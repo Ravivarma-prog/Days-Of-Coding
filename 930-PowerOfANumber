@@ -1,0 +1,58 @@
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+link : https://leetcode.com/problems/powx-n/
+
+code :
+
+class Solution {
+public:
+    
+    double findPower(double x , int n)
+    {
+        if(n == 0)
+            return 1;
+        
+        if(n==1)
+            return x;
+        
+        if(n%2 == 0)
+            return findPower(x*x , n/2);
+        
+        return x*findPower(x*x , (n-1)/2);
+        
+    }
+    
+    
+    double negPower(double x , unsigned long long int n)
+    {
+        if(n == 0)
+            return 1;
+        
+        if(n==1)
+            return x;
+        
+        if(n%2 == 0)
+            return negPower(x*x , n/2);
+        
+        return x*negPower(x*x , (n-1)/2);
+        
+    }
+    
+    double myPow(double x, int n) {
+        
+        if(x == 1)
+            return x;
+        
+        
+        if(n < 0)
+        {
+            unsigned long long int nn = -1*long(n);
+            double ans = negPower(x , nn);
+            return 1.0/ans;
+        }
+            
+        
+        return findPower(x , n);
+        
+    }
+};
