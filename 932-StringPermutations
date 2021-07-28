@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+void solve(string s , int i , int j)
+{
+    if(i==j)
+    {
+        cout << s << endl;
+    }
+    
+    else
+    {
+        for(int k = i ; k <= j ; k++)
+        {
+            swap(s[i] , s[k]);
+            solve(s , i+1 , j);
+            swap(s[i] , s[k]);
+        }    
+    }
+    
+}
+
+int main(){
+    string s = "abcd";
+    solve(s , 0 , 3);
+}
