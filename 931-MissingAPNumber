@@ -1,0 +1,42 @@
+You are given a sorted array of ‘N’ distinct integers that are in the Arithmetic Progression sequence 
+except for one element which is missing from the sequence. You have to find that missing number from the given sequence.
+
+link : https://www.codingninjas.com/codestudio/problems/missing-number-in-ap_975498?leftPanelTab=0
+
+Code :
+
+int missingNumber(vector<int> &arr, int n) 
+{
+    int d = (arr[n-1]-arr[0])/n;
+    
+    int left = 0 ,  right = n-1;
+    
+    while(left < right)
+    {
+        int mid = left + (right-left)/2;
+        int n1 = mid-left+1;
+//         int n2 = right-mid+1;
+        
+        if(mid > 0 && arr[mid-1] != arr[mid]-d)
+            return arr[mid]-d;
+        
+        if(mid < n-1 && arr[mid+1] != arr[mid]+d)
+            return arr[mid]+d;
+        
+        int leftNth = arr[left] + (n1-1)*d; // a+(n-1)d
+//         int rightNth = nums[mid] + (n2-1)*d;
+        
+        if(arr[mid] != leftNth)
+        {
+            right = mid-1;
+        }
+        
+        else
+        {
+            left = mid;
+        }
+        
+    }
+	return -1;
+}
+
