@@ -1,0 +1,18 @@
+Given the position of a Bishop (A, B) on an 8 * 8 chessboard.
+
+Your task is to count the total number of squares that can be visited by the Bishop in one move.
+
+The position of the Bishop is denoted using row and column number of the chessboard.
+
+link : https://www.interviewbit.com/problems/total-moves-for-bishop/
+
+Code :
+
+int Solution::solve(int A, int B) {
+    int topLeft = min(A , B)-1;
+    int topRight = min(A , 9-B)-1;
+    int bottomLeft = min(9-A , B)-1;
+    int bottomRight = 8-max(A,B);
+
+    return topLeft+topRight+bottomLeft+bottomRight;
+}
