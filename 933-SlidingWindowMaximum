@@ -1,0 +1,96 @@
+Given an array of integers A.  There is a sliding window of size B which 
+
+is moving from the very left of the array to the very right. 
+
+You can only see the w numbers in the window. Each time the sliding window moves 
+
+rightwards by one position. You have to find the maximum for each window. 
+
+Approach : Sliding window approach is easy , but it is important to maintain the values in a datastructure so that we could keep track of the maximum values
+
+link : https://www.interviewbit.com/problems/sliding-window-maximum/
+
+Code :
+
+class Node {
+    public:
+        int val;
+        Node * left;
+        Node * right;
+
+        Node() : val{0} , left{NULL} , right{NULL} {}
+        Node(int x) : val{x} , left{NULL} , right{NULL} {}
+};
+
+int findMax(Node * root)
+{
+    if(root == NULL)
+        return NULL;
+    if(root->right == NULL)
+        return root->val;
+    return findMax(root->right);
+}
+
+Node * insertNode(Node * root , int x)
+{
+    if(root == NULL)
+        return new Node(x);
+    if(x <= root->val)
+        root->left = insertNode(root->left , x);
+    
+    else   
+        root->right = insertNode(root->right , x);
+    
+    return root;
+}
+
+Node * deleteElement(Node * root , int x)
+{
+    if(root == NULL)
+        return NULL;
+    if(x < root->val)
+        root->left = deleteElement(root->left ,x );
+    else if(x > root->val)
+        root->right = deleteElement(root->right , x);
+    else if(root->right != NULL && root->left != NULL)
+    {
+        int m = findMax(root->left);
+        root->val = m;
+        root->left = deleteElement(root->left , m);
+    }
+    else
+    {
+        Node * temp = root;
+        root = (root->left == NULL) ? root->right : root->left;
+        delete(temp);
+    }
+
+    return root;
+}
+
+vector<int> Solution::slidingMaximum(const vector<int> &A, int B) {
+    int n = A.size();
+
+    int i = 0 , j = 0;
+
+    Node * root = NULL;
+    vector<int>ans = {};
+    while( j <= n)
+    {
+        if(j-i == B)
+        {
+            ans.push_back(findMax(root));
+            root = deleteElement(root , A[i]);
+            root = insertNode(root , A[j]);
+            i++ , j++;
+        }
+
+        else
+        {
+            root = insertNode(root , A[j]);
+            j++;
+        }
+    }
+
+    return ans;
+}
