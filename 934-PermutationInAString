@@ -1,0 +1,61 @@
+Given two strings s1 and s2, return true if s2 contains the permutation of s1.
+
+In other words, one of s1's permutations is the substring of s2.
+
+link : https://leetcode.com/problems/permutation-in-string/
+
+Code:
+
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        int n = s1.length() , m = s2.length();
+        
+        int k = n;
+    
+        vector<int>count(26, 0);
+        
+        for(char c : s1)
+            count[c-'a']++;
+        
+        if(n > m)
+            return false;
+        
+        int i = 0 , j = 0;
+        
+        while(j <= m)
+        {
+            if(j-i == k)
+            {
+                int it;
+                for(it = i ; it < j ; it++)
+                {
+                    
+                    // cout << s2[it] ;
+                    if(count[s2[it]-'a'] != 0)
+                    {
+                        count[s2[it]-'a']--;
+                    }
+                    else
+                        break;
+                }
+                
+                
+                if(it == j)
+                    return true;
+                
+                for(char c : s1)
+                    count[c-'a'] = 0;
+                
+                for(char c : s1)
+                    count[c-'a']++;
+                
+                i++ , j++;
+            }
+            else
+                j++;
+        }
+        
+        return false;
+    }
+};
