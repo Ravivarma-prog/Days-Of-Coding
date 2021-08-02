@@ -1,0 +1,108 @@
+Given a string of length N of lowercase alphabet characters. 
+The task is to complete the function countDistinctSubstring(), which returns the count of total number of distinct substrings of this string.
+
+link : https://practice.geeksforgeeks.org/problems/count-of-distinct-substrings/1#
+
+Approach : Used Tries for this so that duplicate substrings can be ignored
+
+Code :
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int countDistinctSubstring(string s);
+
+int main()
+{
+ int t,l,i,j;
+ int temp;
+    cin>>t;
+ while(t--){
+ string s;
+  cin>>s;
+  cout<<countDistinctSubstring(s)<<endl;
+
+ }
+}
+
+// } Driver Code Ends
+
+
+/*You are required to complete this method */
+
+int countS;
+
+class Trie{
+  public :
+    bool end;
+    Trie * next[26];
+    
+    Trie(){
+        end = false;
+        
+        for(int i = 0 ; i < 26 ; i++)
+            next[i] = NULL;
+    }
+};
+
+void insert(Trie * root ,string s , int i , int n)
+{
+    Trie * parent = root;
+    
+    for(int k = i ; k < n ; k++)
+    {
+        int ind = s[k]-'a';
+        
+        if(parent->next[ind] == NULL)
+        {
+            parent->next[ind] = new Trie();
+        }
+        parent = parent->next[ind];
+        parent->end = true;
+    }
+}
+
+void printTrie(Trie * root , int ind , char s[])
+{
+    Trie * parent = root;
+    
+    if(parent->end == true)
+    {
+        s[ind] = '\0';
+        countS= countS+1;
+    }
+    
+    for(int i = 0 ; i < 26 ; i++)
+    {
+        if(parent->next[i] != NULL)
+        {
+            s[ind] = 'a'+i;
+            printTrie(parent->next[i] , ind+1 ,s);
+        }
+    }
+}
+
+int countDistinctSubstring(string s)
+{
+    //Your code here
+    
+    countS = 0;
+    
+    int n = s.length();
+    Trie * root = new Trie();
+    
+    for(int i = 0 ; i < n ; i++)
+    {
+        insert(root , s , i , n);
+    }
+    
+    char str[n+1];
+    
+    printTrie(root , 0 , str);
+    
+    
+    return countS+1;
+}
+
