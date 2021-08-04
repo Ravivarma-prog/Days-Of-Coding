@@ -10,6 +10,8 @@ link : https://www.hackerearth.com/practice/math/number-theory/basic-number-theo
 
 Code :
 
+//Finding the factors will take O(sqrt(N)) and thats the space and time complexity
+
 #include<bits/stdc++.h>
 using namespace std;
 
